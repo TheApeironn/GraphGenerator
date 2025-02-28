@@ -4,5 +4,5 @@
 /**
  * 
  */
-module PBL__1 {
+module GraphGenerator {
 }
