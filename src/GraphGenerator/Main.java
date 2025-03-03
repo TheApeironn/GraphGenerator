@@ -22,7 +22,7 @@ public class Main {
 //		String input = scanner.nextLine();
 		Graph graph = new Graph();
 		
-		int[] degreeSequences = {3, 3, 2, 2, 2, 2};
+		int[] degreeSequence = {3, 3, 2, 2, 2, 2};
 		graph.graphGenaratorWithSequence(degreeSequence);
 		graph.printGraph();
 		graph.getBoard().displayBoard();
