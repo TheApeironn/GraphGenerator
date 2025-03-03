@@ -12,14 +12,7 @@ public class Board {
 		this.board = board;
 	}
 
-	public char[][] getBoard() {
-		return board;
-	}
-
-	public void setBoard(char[][] board) {
-		this.board = board;
-	}
-
+	
 	public void initializeBoard() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
@@ -45,5 +38,15 @@ public class Board {
 			this.board[y][x] = chr;
 		}
 	}
+	
+	public char[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(char[][] board) {
+		this.board = board;
+	}
+
+	
 
 }

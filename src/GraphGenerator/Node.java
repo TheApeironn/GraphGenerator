@@ -1,60 +1,56 @@
 package GraphGenerator;
 
-import java.util.Random;
-
 public class Node {
-	private static char[] nodeLetters = new char[7];
-	private static Position[] positions = new Position[7];
-	private static int counter = 0;
-	
-
+	private char letter;
+	private Position position;
 	private int degree;
+	private Node[] adjacentList = new Node[0];
 
-	public Node(int degree) {
+	public Node() {
+	}
+	
+	public Node(char letter, Position position, int degree, Node[] adjacentList) {
+		this.letter = letter;
+		this.position = position;
 		this.degree = degree;
-		this.nodeLetters[counter] = (char) (counter + 65);
-		Position position = new Position();
-		int x = 0;
-		int y = 0;
-		
-		Random random = new Random();
-		
-		do {
-			x = random.nextInt(10);
-			y = random.nextInt(7);
-
-			position.setX(x * 4);
-			position.setY(y * 4);
-
-		} while (isFull(position));
-
-		positions[counter] = position;
-
-		counter++;
+		this.adjacentList = adjacentList;
+	}
+	
+	public void addNeighbor(Node neighbor) {
+		// if its list is empty
+		if (adjacentList.length == 0) {
+	        adjacentList = new Node[1];
+	        adjacentList[0] = neighbor;
+	    } else {// if not empty
+	    	//if its already exist in list
+	    	for (Node node : adjacentList) {
+	            if (node == neighbor) {
+	                return;
+	            }
+	        }
+	        Node[] newAdjacentList = new Node[adjacentList.length + 1];
+	        for (int i = 0; i < adjacentList.length; i++) {
+				newAdjacentList[i] = adjacentList[i];
+			}
+	        newAdjacentList[adjacentList.length] = neighbor;
+	        adjacentList = newAdjacentList;
+	    }
 	}
 
-	public static char[] getNodes() {
-		return nodeLetters;
+	public char getLetter() {
+		return letter;
 	}
 
-	public static void setNodes(char[] nodeLetters) {
-		Node.nodeLetters = nodeLetters;
+	public void setLetter(char letter) {
+		this.letter = letter;
 	}
 
-	public static Position[] getPositions() {
-		return positions;
+	public Position getPosition() {
+		return position;
 	}
 
-	public static void setPositions(Position[] positions) {
-		Node.positions = positions;
-	}
-
-	public static int getCounter() {
-		return counter;
-	}
-
-	public static void setCounter(int counter) {
-		Node.counter = counter;
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
 	public int getDegree() {
@@ -64,16 +60,13 @@ public class Node {
 	public void setDegree(int degree) {
 		this.degree = degree;
 	}
-
-	public boolean isFull(Position position) {
-
-		for (int i = 0; i < counter; i++) {
-			if (positions[i] != null && positions[i].getX() == position.getX()
-					&& positions[i].getY() == position.getY()) {
-				return true;
-			}
-		}
-		return false;
+	
+	public Node[] getadjacentList() {
+		return adjacentList;
 	}
+	public void setadjacentList(Node[] adjacentList) {
+		this.adjacentList = adjacentList;
+	}
+
 
 }
