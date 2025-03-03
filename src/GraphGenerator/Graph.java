@@ -23,6 +23,7 @@ public class Graph {
 		}
 	}
 
+	// generates a graph according to the given degree sequence
 	public void graphGenaratorWithSequence(int[] degreeSequence) {
 		// setting up the number of nodes
 		int numberOfNodes = degreeSequence.length;
@@ -64,6 +65,7 @@ public class Graph {
 
 	}
 
+	// checks if the given sequence is a graphical sequence
 	public boolean isGraphical(int[] degreeSequence) {
 		int[] havelHakimiArray = sortArray(degreeSequence);
 		boolean flag = true;
@@ -118,6 +120,7 @@ public class Graph {
 		return flag;
 	}
 
+	// creating a new node
 	public Node createNode() {
 		Node newNode = new Node();
 		Position position = new Position();
@@ -150,6 +153,7 @@ public class Graph {
 		return newNode;
 	}
 
+	// controlling that the new random position is full?
 	public boolean isPositionFull(Position position) {
 		// controlling that the new random position is full?
 		for (int i = 0; i < counter + 1; i++) {
@@ -164,6 +168,7 @@ public class Graph {
 		return false;
 	}
 
+	// sorts the array in descending order
 	public int[] sortArray(int[] array) {
 		int[] sortedArray = new int[array.length];
 		int turnOfMax = 0;
@@ -186,10 +191,11 @@ public class Graph {
 		return sortedArray;
 	}
 
+	// orders the nodes according to their degrees
 	public Node[] sortNodes(Node[] array) {
 		Node[] sortedArray = new Node[array.length];
 
-		// Sıralama işlemi yapılmadan önce array'i kopyalayalım.
+		
 		for (int i = 0; i < sortedArray.length; i++) {
 			sortedArray[i] = array[i];
 		}
@@ -198,7 +204,7 @@ public class Graph {
 			int maxDegree = Integer.MIN_VALUE;
 			int turnOfMax = 0;
 
-			// Maksimum dereceli düğümü bulma
+		// max degree
 			for (int i = 0; i < array.length; i++) {
 				if (array[i] != null && array[i].getDegree() > maxDegree) {
 					maxDegree = array[i].getDegree();
@@ -206,10 +212,10 @@ public class Graph {
 				}
 			}
 
-			// Maksimum dereceyi sıralanmış dizideki yerine koyuyoruz
+			// put max value to ordered array and delete old place
 			Node maxNode = array[turnOfMax];
-			array[turnOfMax] = null; // Bu öğeyi 'silmiş' olduk
-			sortedArray[j] = maxNode; // Sıralı dizinin doğru konumuna ekliyoruz
+			array[turnOfMax] = null; 
+			sortedArray[j] = maxNode; 
 		}
 
 		return sortedArray;
