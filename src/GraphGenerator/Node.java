@@ -15,7 +15,7 @@ public class Node {
 		this.degree = degree;
 		this.adjacentList = adjacentList;
 	}
-	
+	//deneme
 	public void addNeighbor(Node neighbor) {
 		// if its list is empty
 		if (adjacentList.length == 0) {
