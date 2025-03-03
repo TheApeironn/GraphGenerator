@@ -8,33 +8,48 @@ public class Node {
 
 	public Node() {
 	}
-	
+
 	public Node(char letter, Position position, int degree, Node[] adjacentList) {
 		this.letter = letter;
 		this.position = position;
 		this.degree = degree;
 		this.adjacentList = adjacentList;
 	}
-	//deneme
+
+	//deep copy constructor
+	public Node(Node node) {
+		this.letter = node.letter;
+		this.position = new Position(node.position.getX(), node.position.getY());
+		this.degree = node.degree;
+		
+		//deep copy of adjacentList
+		this.adjacentList = new Node[node.adjacentList.length];
+		for (int i = 0; i < node.adjacentList.length; i++) {
+			//deep copy of each node in adjacentList
+			this.adjacentList[i] = new Node(node.adjacentList[i]);
+		}
+	}
+
+
 	public void addNeighbor(Node neighbor) {
 		// if its list is empty
 		if (adjacentList.length == 0) {
-	        adjacentList = new Node[1];
-	        adjacentList[0] = neighbor;
-	    } else {// if not empty
-	    	//if its already exist in list
-	    	for (Node node : adjacentList) {
-	            if (node == neighbor) {
-	                return;
-	            }
-	        }
-	        Node[] newAdjacentList = new Node[adjacentList.length + 1];
-	        for (int i = 0; i < adjacentList.length; i++) {
+			adjacentList = new Node[1];
+			adjacentList[0] = neighbor;
+		} else {// if not empty
+			// if its already exist in list
+			for (Node node : adjacentList) {
+				if (node == neighbor) {
+					return;
+				}
+			}
+			Node[] newAdjacentList = new Node[adjacentList.length + 1];
+			for (int i = 0; i < adjacentList.length; i++) {
 				newAdjacentList[i] = adjacentList[i];
 			}
-	        newAdjacentList[adjacentList.length] = neighbor;
-	        adjacentList = newAdjacentList;
-	    }
+			newAdjacentList[adjacentList.length] = neighbor;
+			adjacentList = newAdjacentList;
+		}
 	}
 
 	public char getLetter() {
@@ -60,13 +75,13 @@ public class Node {
 	public void setDegree(int degree) {
 		this.degree = degree;
 	}
-	
+
 	public Node[] getadjacentList() {
 		return adjacentList;
 	}
+
 	public void setadjacentList(Node[] adjacentList) {
 		this.adjacentList = adjacentList;
 	}
-
 
 }

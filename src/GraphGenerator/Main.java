@@ -24,9 +24,17 @@ public class Main {
 		
 		int[] degreeSequence = {3, 3, 2, 2, 2, 2};
 		graph.graphGenaratorWithSequence(degreeSequence);
-		graph.printGraph();
 		graph.getBoard().displayBoard();
+		graph.printGraph();
+
+		Node[] nodes = graph.getNodes();
+		for (Node node : nodes) {
+			System.out.println(node.getLetter() + " -> " + node.getDegree());
+		}
 		
+		
+		
+
 //		String[] degrees = input.split(",");
 //		int[] degreeSequence = new int[degrees.length];
 //
