@@ -12,15 +12,15 @@ public class Graph {
 	public Graph() {
 		board.initializeBoard();
 	}
-	
+
 	public void printGraph() {
-	    for (Node node : nodes) {
-	        System.out.print(node.getLetter() + " -> ");
-	        for (Node neighbor : node.getadjacentList()) {
-	            System.out.print(neighbor.getLetter() + " ");
-	        }
-	        System.out.println();
-	    }
+		for (Node node : nodes) {
+			System.out.print(node.getLetter() + " -> ");
+			for (Node neighbor : node.getadjacentList()) {
+				System.out.print(neighbor.getLetter() + " ");
+			}
+			System.out.println();
+		}
 	}
 
 	public void graphGenaratorWithSequence(int[] degreeSequence) {
@@ -34,30 +34,34 @@ public class Graph {
 			nodes[i] = createNode();
 			nodes[i].setDegree(degreeSequence[i]);
 		}
-		if (!isGraphical(degreeSequence)) {
-			System.out.println("this degree sequence does not provide a graph!!!");
-			return;
+
+		// to store nodes in a temp array
+		Node[] tempNodes = new Node[numberOfNodes];
+		for (int i = 0; i < numberOfNodes; i++) {
+			tempNodes[i] = new Node(nodes[i]);
 		}
-		
-		// setting up the adjacents
-		for (int i = 0; i < degreeSequence.length; i++) {
-			Node currentNode = nodes[i];
-			int currentNodeDegree = currentNode.getDegree();	
-			
-			//not to exceed bound we limit it by nodes.length
-			// we cant add more adjacent node than the given degree
-			for (int j = i+1; j < nodes.length && currentNodeDegree > nodes[i].getadjacentList().length; j++) {
-				if(nodes[j].getDegree() > 0) {
-					currentNode.addNeighbor(nodes[j]);
-					nodes[j].addNeighbor(currentNode);
-				}
+
+		while (true) {
+			nodes = sortNodes(nodes);
+			if (nodes[0].getDegree() == 0) {
+				break;
+			}
+
+			Node currentNode = nodes[0];
+			int currentNodeDegree = currentNode.getDegree();
+			currentNode.setDegree(0);
+
+			for (int i = 1; i <= currentNodeDegree; i++) {
+				nodes[i].addNeighbor(currentNode);
+				currentNode.addNeighbor(nodes[i]);
+				nodes[i].setDegree(nodes[i].getDegree() - 1);
 			}
 		}
-	}
-	
-	public void connectNodes(Node node1, Node node2) {
-		node1.addNeighbor(node2);
-		node2.addNeighbor(node1);
+		 // Restore the original degrees
+		 for (int i = 0; i < numberOfNodes; i++) {
+			nodes[i].setDegree(tempNodes[i].getDegree());
+		}
+
 	}
 
 	public boolean isGraphical(int[] degreeSequence) {
@@ -74,7 +78,7 @@ public class Graph {
 						.println("The given sequence does not provide a Graph according to the Havel-Hakimi Algorithm");
 				return false;
 			}
-			
+
 			// processing the havel hakimi algorithm
 			for (int i = 0; i < maxNumber; i++) {
 				havelHakimiArray[i] = havelHakimiArray[i + 1] - 1;
@@ -82,8 +86,9 @@ public class Graph {
 			}
 			havelHakimiArray[counter + 1] = 0;
 			havelHakimiArray = sortArray(havelHakimiArray);
-			
-			// if an element of array is negative while applying the algorithm, that sequence is not a graph
+
+			// if an element of array is negative while applying the algorithm, that
+			// sequence is not a graph
 			for (int i = 0; i < havelHakimiArray.length; i++) {
 				if (havelHakimiArray[i] < 0) {
 					System.out.println(
@@ -91,8 +96,9 @@ public class Graph {
 					return false;
 				}
 			}
-			
-			// after a certain iterating every element of array must be 0, so we can understand that the sequence is a reliable graph
+
+			// after a certain iterating every element of array must be 0, so we can
+			// understand that the sequence is a reliable graph
 			if (count > 20) {
 				for (int i = 0; i < havelHakimiArray.length; i++) {
 					if (havelHakimiArray[i] != 0) {
@@ -119,7 +125,7 @@ public class Graph {
 
 		int x = 0;
 		int y = 0;
-		// creating random position on the table 
+		// creating random position on the table
 		do {
 			x = random.nextInt(10);
 			y = random.nextInt(7);
@@ -133,6 +139,7 @@ public class Graph {
 		newNode.setLetter((char) (counter + 65));
 		newNode.setPosition(position);
 		nodes[counter] = newNode;
+		positions[counter] = position;
 		counter++;
 
 		// saving its place to the board
@@ -145,7 +152,7 @@ public class Graph {
 
 	public boolean isPositionFull(Position position) {
 		// controlling that the new random position is full?
-		for (int i = 0; i < counter; i++) {
+		for (int i = 0; i < counter + 1; i++) {
 			// is full , cant be used
 			// new position is compared with the previous positions
 			if (positions[i] != null && positions[i].getX() == position.getX()
@@ -177,6 +184,43 @@ public class Graph {
 			sortedArray[j] = maxNumber;
 		}
 		return sortedArray;
+	}
+
+	public Node[] sortNodes(Node[] array) {
+		Node[] sortedArray = new Node[array.length];
+
+		// Sıralama işlemi yapılmadan önce array'i kopyalayalım.
+		for (int i = 0; i < sortedArray.length; i++) {
+			sortedArray[i] = array[i];
+		}
+
+		for (int j = 0; j < sortedArray.length; j++) {
+			int maxDegree = Integer.MIN_VALUE;
+			int turnOfMax = 0;
+
+			// Maksimum dereceli düğümü bulma
+			for (int i = 0; i < array.length; i++) {
+				if (array[i] != null && array[i].getDegree() > maxDegree) {
+					maxDegree = array[i].getDegree();
+					turnOfMax = i;
+				}
+			}
+
+			// Maksimum dereceyi sıralanmış dizideki yerine koyuyoruz
+			Node maxNode = array[turnOfMax];
+			array[turnOfMax] = null; // Bu öğeyi 'silmiş' olduk
+			sortedArray[j] = maxNode; // Sıralı dizinin doğru konumuna ekliyoruz
+		}
+
+		return sortedArray;
+	}
+
+	public Node[] getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(Node[] nodes) {
+		this.nodes = nodes;
 	}
 
 	public Position[] getPositions() {
