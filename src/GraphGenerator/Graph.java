@@ -60,7 +60,7 @@ public class Graph {
 		}
 		 // Restore the original degrees
 		 for (int i = 0; i < numberOfNodes; i++) {
-			nodes[i].setDegree(tempNodes[i].getDegree());
+			nodes[i].setDegree(nodes[i].getadjacentList().length);
 		}
 
 	}
